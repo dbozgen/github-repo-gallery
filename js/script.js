@@ -23,4 +23,13 @@ const DisplayUserInfo  = function(data){
       <p><strong>Number of public repos:</strong> ${data.public_repos}</p>
     </div>`; 
     profile.append(div);
+    displayRepos();
+};
+
+const displayRepos = async function (repos) {
+  const selectedRepos = await fetch (`https://api.github.com/users/${username}/repos?sort=update&per_page=100`);
+  const repoData = await selectedRepos.json();
+  displayRepos(repoData);
+
+
 };
