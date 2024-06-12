@@ -39,7 +39,7 @@ const readyRepos = async function () {
 
 const displayRepos = function (repos) {
   filterInput.classList.remove("hide");
-  
+
   for (const repo of repos) {
     const repoItem = document.createElement("li");
     repoItem.classList.add("repo");
@@ -71,7 +71,7 @@ const specificRepoInfo = async function(repoName){
 };
 
 const showSpecificRepo = function(repoInfo, languages){
-  repoData.innerHTML = "";
+  repoDataContainer.innerHTML = "";
   const div = document.createElement("div");
   div.innerHTML =`
   <h3>Name: ${repoInfo.name}</h3>
@@ -89,7 +89,7 @@ const showSpecificRepo = function(repoInfo, languages){
 
 backButton.addEventListener("click", function(){
   allRepos.classList.remove("hide");
-  repoData.classList.add("hide");
+  repoDataContainer.classList.add("hide");
   backButton.classList.add("hide");
 });
 
