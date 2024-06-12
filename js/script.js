@@ -1,6 +1,8 @@
 const profile = document.querySelector(".overview");
 const username = "dbozgen"; 
 const repoList = document.querySelector(".repo-list");
+const allRepos = document.querySelector(".repos");
+const repoData = document.querySelector(".repo-data");
 
 const gitProfile = async function(){
     const responseData = await fetch (`https://api.github.com/users/${username}`);
@@ -42,3 +44,40 @@ const displayRepos = function (repos) {
   }
 };
 
+repoList.addEventListener("click", function(e){
+  if (e.target.matches("h3")) {
+    const repoName = e.target.innerText; 
+    specificRepoInfo(repoName);
+  }
+});
+
+const specificRepoInfo = async function(repoName){
+  const pullRepoData = await fetch(`https://api.github.com/repos/${username}/${repoName}`);
+  const repoInfo = await pullRepoData.json();
+  console.log(repoInfo);
+  const fetchLanguages = await fetch(`https://api.github.com/repos/${username}/${repoName}/languages`);
+  const languageData = await fetchLanguages.json();
+  console.log(languageData);
+  const languages = [];
+  for (const language in languageData){
+    languages.push(language);
+  }; 
+  console.log(languages);
+  showSpecificRepo(repoInfo, languages);
+};
+
+const showSpecificRepo = function(repoInfo, languages){
+  repoData.innerHTML = " ";
+  const div = document.createElement("div");
+  div.innerHTML =`
+  <h3>Name: ${repoInfo.name}</h3>
+    <p>Description: ${repoInfo.description}</p>
+    <p>Default Branch: ${repoInfo.default_branch}</p>
+    <p>Languages: ${languages.join(", ")}</p>
+    <a class="visit" href="${repoInfo.html_url}" target="_blank" rel="noreferrer noopener">View Repo on GitHub!</a>
+    `;
+  repoData.append(div);
+  repoData.classList.remove("hide");
+  allRepos.classList.add("hide");
+
+};
